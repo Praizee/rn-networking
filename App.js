@@ -13,6 +13,7 @@ import {
 
 const App = () => {
   const [postList, setPostList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async (limit = 10) => {
     const response = await fetch(
@@ -20,11 +21,21 @@ const App = () => {
     );
     const data = await response.json();
     setPostList(data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
